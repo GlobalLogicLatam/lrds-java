@@ -1,0 +1,455 @@
+# Swagger API Version prperty
+swagger: '2.0'
+
+# Swagger API info prperty
+info:
+  version: "1.0.0"
+  title: "Alumnos API"
+  description: "REST API para el sistema Alumnos"
+  contact:
+    name: "Jorge Pastorino"
+    email: jorge.pastorino@globallogic.com
+  license:
+    name: GlobalLogic
+    url: https://www.globallogic.com/latam
+
+host: "www.globallogic.com"
+schemes: [ "http" ]
+basePath: "/SOA/Projects/AlumnosAPI"
+
+# Swagger API paths prperty
+
+paths:
+  /user/login:
+    post:
+      summary: Ingreso al Sistema
+      description: |
+        Ingresar al sistema con usuario ya creado. En caso de exito la aplicacion devolvera un header con un token asosiado a la conexion del usuario.
+      operationId: login
+      tags:
+        - session
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: login
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Login_Type"
+      responses:
+        200:
+          description: Successful Login
+          schema:
+            $ref: "#/definitions/Header_Type"
+        400:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error_Type"
+        403:
+          $ref : "#/responses/forbidden"
+
+  /user/signin:
+    post:
+      summary: Crear Usuario
+      description: |
+        Permite la creacion de un usuario, a partir de los parametros definidos en el Body de la operacion, en caso de tener exito el sistema devolvera un header con un token asosiado a la conexion del usuario, lo que indicara que el mismo ya esta logeado.
+      operationId: singin
+      tags:
+        - session
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: sigin
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BasicUser_Type"
+      responses:
+        201:
+          description: Successful Creation
+          schema:
+            $ref: "#/definitions/Header_Type"
+        409:
+          $ref : "#/responses/conflict"
+
+  /user/logout:
+    post:
+      summary: Cerrar sesion
+      description: |
+          Permite enviar la peticion de terminar la sesion actualmente activa.
+      operationId: loguot
+      tags:
+        - session
+      consumes: [ "application/json" ]
+      parameters:
+        - name: token
+          in: header
+          description: token to be passed as a header
+          required: true
+          type: string
+        - name: loguot
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Loguot_Type"
+      responses:
+        204:
+           $ref : "#/responses/ok"
+        403:
+           $ref : "#/responses/forbidden"
+
+  /user/{userName}:
+    get:
+      tags:
+        - session
+      summary: Obtener Usuario.
+      description: |
+        Obtener los datos del usuario a partir del UserName
+      operationId: getUserByName
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: userName
+          in: path
+          description: nombre del usuario.
+          required: true
+          type: string
+        - name: token
+          in: header
+          description: token to be passed as a header
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/User_Type"
+        403:
+          $ref : "#/responses/forbidden"
+        404:
+          $ref : "#/responses/not_found"
+        500:
+          $ref : "#/responses/internal_server_error"
+
+    post:
+      summary: Actualizar Usuario
+      description: |
+        Actualizar  la informacion referida al usuario actualinfo de un usuario.
+      operationId: update
+      tags:
+        - session
+      consumes: [ "application/json" ]
+      parameters:
+        - in: path
+          name: userName
+          description: |
+            UserName del usuario actual
+          required: true
+          type: string
+        - name: token
+          in: header
+          description: token to be passed as a header
+          required: true
+          type: string
+        - name: updateBody
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateUser_Type"
+      responses:
+        200:
+          description: The request has succeeded.
+          schema:
+            $ref: "#/definitions/User_Type"
+        401:
+          $ref : "#/responses/unauthorized"
+        403:
+          $ref : "#/responses/forbidden"
+        404:
+          $ref : "#/responses/not_found"
+        500:
+           $ref : "#/responses/internal_server_error"
+        501:
+           $ref : "#/responses/not_implemented"
+
+  /user/{user_id}/materias:
+    get:
+      summary: Materias disponibles
+      description: |
+        Obtener las materias disponibles para que el almuno pueda inscribirse.
+      operationId: getMaterias
+      tags:
+        - subjects
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: user_id
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListOfMaterias_Type"
+        403:
+          $ref : "#/responses/forbidden"
+        404:
+          $ref : "#/responses/not_found"
+        500:
+           $ref : "#/responses/internal_server_error"
+
+  /user/{user_id}/materia/{materia_id}:
+    get:
+      summary: Estado de la Materia para el alumno
+      description: |
+        Obtener el estado de la materia para un alumno en particular
+      operationId: getMateria
+      tags:
+        - subjects
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: user_id
+          in: path
+          type: string
+          required: true
+        - name: materia_id
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/AlumnoMateria_Type"
+        403:
+          $ref : "#/responses/forbidden"
+        404:
+          $ref : "#/responses/not_found"
+        500:
+           $ref : "#/responses/internal_server_error"
+    post:
+      summary: Inscribir o desincribir a un alumno en una materia
+      description: |
+        Cambia el estado de la materia para un alumno en particular
+      operationId: changeMateria
+      tags:
+        - materias
+      consumes: [ "application/json" ]
+      produces: [ "application/json" ]
+      parameters:
+        - name: user_id
+          in: path
+          type: string
+          required: true
+        - name: materia_id
+          in: path
+          type: string
+          required: true
+      responses:
+        204:
+          $ref: "#/responses/ok"
+        403:
+          $ref : "#/responses/forbidden"
+        404:
+          $ref : "#/responses/not_found"
+        500:
+           $ref : "#/responses/internal_server_error"
+
+
+
+# Swagger API definitios property
+responses:
+  ok: #204
+    description: The server has successfully fulfilled the request and that there is no additional content to send in the response payload body.
+  unauthorized: #401
+    description: The request has not been applied because it lacks valid authentication credentials for the target resource.
+  forbidden:  #402
+    description: Missing or incorrect credentials.
+  not_found: #404
+    description: The specified resource was not found.
+  conflict: #409
+    description: The request could not be completed due to a conflict with the current state of the target resource. User Already Exist
+  internal_server_error: #500
+    description: Internal Server Error.
+  not_implemented: #501
+    description: The server does not support the functionality required to fulfill the reques..
+
+definitions:
+#  <--- Begin:  Commons definitions -->
+  Link:
+      type: object
+      properties:
+          method:
+            type: string
+            enum:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PURGE
+          uri:
+            type: string
+          rel:
+            type: string
+            enum:
+              - self
+              - next_page
+              - previous_page
+              - new
+              - upd
+              - del
+
+  Hypermedia:
+    type: object
+    properties:
+      links:
+        type: array
+        items:
+          $ref: "#/definitions/Link"
+
+  Header_Type:
+    type: object
+    properties:
+      time:
+        type: string
+        format: dateTime
+      token:
+        type: string
+    required:
+      - token
+
+
+# <--- EndOf: Commons definitions  --->
+
+# <--- Begin: User definitions     --->
+
+  Login_Type:
+    type: object
+    properties:
+      userName:
+        type: string
+      password:
+        type: string
+    required:
+      - userName
+      - password
+
+  BasicUser_Type:
+    type: object
+    properties:
+      mail:
+        type: string
+        format: email
+      rol:
+        type: string
+        description: roles aceptados por la app
+        default: alumno
+        enum:
+          - alumno
+          - admin
+      userName:
+        type: string
+      firstname:
+        type: string
+      surname:
+        type: string
+      password:
+        type: string
+    required:
+      - mail
+      - rol
+      - userName
+      - password
+
+  User_Type:
+    type: object
+    allOf:
+      - $ref: "#/definitions/Hypermedia"
+      - $ref: "#/definitions/BasicUser_Type"
+      - type: object
+        properties:
+          id:
+           type: string
+           description: indentificador unico del alumno.
+          creationDate:
+            type: string
+            format: dateTime
+
+  UpdateUser_Type:
+    type: object
+    properties:
+      mail:
+        type: string
+        format: email
+      rol:
+        type: string
+      password:
+        type: string
+
+  Error_Type:
+    type: object
+    properties:
+      errorCode:
+        type: integer
+
+  Loguot_Type:
+    type: object
+    properties:
+      links:
+        items:
+          $ref: "#/definitions/Header_Type"
+
+# <--- EndOf: User definitions     --->
+
+# <--- Begin: Materia definitions   --->
+
+  Materia_Type:
+    type: object
+    properties:
+      id:
+        description: identificador unico de la materia
+        type: string
+      nombre:
+        description: nombre de la materia
+        type: string
+      grado:
+        description: año de la materia en la carrera
+        type: integer
+      horario:
+        description: hora en la que se cursa la materia o se rinde final.
+        type: string
+        format: time
+      fecha:
+        description: fecha en la que se cursa o rinde la materia.
+        type: string
+        format: date
+    required:
+      - nombre
+      - fecha
+
+  AlumnoMateria_Type:
+    type: object
+    allOf:
+      - $ref: "#/definitions/Hypermedia"
+      - $ref: "#/definitions/Materia_Type"
+      - type: object
+        properties:
+          inscripto:
+            description: si el alumno esta inscripto o no en la materia.
+            type: boolean
+
+  ListOfMaterias_Type:
+    type: object
+    allOf:
+      - $ref: "#/definitions/Hypermedia"
+      - type: object
+        properties:
+          materiasDelAlumno:
+            type: array
+            description: lista completa de materias para el alumnno agrupadas por fecha
+            items:
+              $ref: "#/definitions/AlumnoMateria_Type"
+
+# <--- EndOf: Materia definitions   --->
