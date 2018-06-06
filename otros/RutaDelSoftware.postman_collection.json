@@ -1,0 +1,194 @@
+{
+	"id": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+	"name": "RutaDelSoftware",
+	"description": "",
+	"order": [
+		"00922d24-8ced-c82d-e798-5ffd2f7a9e68",
+		"c4abd37a-cb06-aad0-d01d-35216047ed0f",
+		"13559b19-813d-1bbd-5464-adbdac7bde57",
+		"cba692ef-dabb-3ed0-b552-63ab46d70f61",
+		"cc19b02e-5f98-e821-6040-bf46a89fd03f",
+		"cbf911b9-adad-04fd-8027-21f6ec6e54ca"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1527892217029,
+	"owner": "45670",
+	"public": false,
+	"requests": [
+		{
+			"id": "00922d24-8ced-c82d-e798-5ffd2f7a9e68",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090//user/login",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1527963530489,
+			"name": "Login OK",
+			"description": "",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"responses": [],
+			"rawModeData": "{\r\n  \"userName\": \"fferro\",\r\n  \"password\": \"facu123\"\r\n}"
+		},
+		{
+			"id": "13559b19-813d-1bbd-5464-adbdac7bde57",
+			"headers": "token: 123\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "123",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090/user/fferro",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get Uesr OK",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1527964010322,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "c4abd37a-cb06-aad0-d01d-35216047ed0f",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090//user/login",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Login NOT OK",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1527964050739,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\r\n  \"userName\": \"fferro\",\r\n  \"password\": \"facu123111\"\r\n}"
+		},
+		{
+			"id": "cba692ef-dabb-3ed0-b552-63ab46d70f61",
+			"headers": "token: 123\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "123",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090/user/fferro123",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get Uesr NOT OK",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1527964035858,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "cbf911b9-adad-04fd-8027-21f6ec6e54ca",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8090/user/1/materias",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"data": null,
+			"dataMode": "params",
+			"name": "Obtener materias del alumno",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1527969936360,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "cc19b02e-5f98-e821-6040-bf46a89fd03f",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8090/user/1/materia/1",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "bc606087-a8a9-8623-6409-998ca9fbe99d",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Incribirse en materia",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1527966137631,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": ""
+		}
+	]
+}
